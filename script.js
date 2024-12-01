@@ -17,11 +17,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     transcriptSegment = message.text;
                 } else if (message.type === "timeUpdate") {
                     const currentSegment = findCurrentTranscriptSegemnt(message.time);
-                    inputData.textContent = currentSegment;
+
+                    // to display the current transcript 
+                    // inputData.textContent += currentSegment;
+
+                    //translate the current transcript segment
                     translateContent(currentSegment)
                         .then(content => {
                             console.log(content);
-                            outputArea.textContent = content;
+                            outputArea.textContent += content;
                         }); 
                 }
 

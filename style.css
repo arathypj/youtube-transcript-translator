@@ -1,0 +1,27 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 10px;
+    width: 100%;
+    min-width: 400px;
+    min-height: 200px;
+    max-height: 400px;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+}
+
+#outputArea {
+    width: 100%;
+    max-width: calc(100% - 20px);
+    height: 150px; /* Fixed height for the input container */
+    overflow: hidden; /* Hide overflow content */
+    font-size: 14px;
+    line-height: 2;
+    border: 1px solid black;
+    padding: 10px;
+    position: relative;
+    display: flex;
+    flex-direction: column-reverse; /* This makes the text flow from bottom to top */
+    box-sizing: border-box;
+}
