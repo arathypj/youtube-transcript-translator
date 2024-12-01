@@ -1,9 +1,29 @@
 {
     "manifest_version": 3,
-    "name": "translation-extension",
-    "description": "Adds translated video subtitle",
+    "name": "translate video transcript",
+    "description": "Reads the transcript of a youtube video and translate to English",
     "version": "1.0",
+    "background": {
+        "service_worker": "background.js"
+    },
+    "permissions": [
+        "tabs",
+        "activeTab",
+        "scripting"
+    ],
+    "content_scripts": [
+        {
+        "matches": ["https://www.youtube.com/*"],
+        "js": ["content_script.js"]
+        }
+    ],
     "action": {
-        "default_popup": "popup.html"
-    }
+        "default_popup": "popup.html",
+        "default_icon": {
+            "16": "icons/icon.png",
+            "48": "icons/icon.png",
+            "128": "icons/icon.png"
+        }
+    },
+    "host_permissions": ["https://www.youtube.com/*"]
 }

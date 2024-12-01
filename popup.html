@@ -6,11 +6,20 @@
     <title>Youtube trascript translator</title>
 </head>
 <body>
-    <h1>Youtube trascript translator</h1>
-    <p id="dataToTranslate">I'm living in India.</p>
-    <button id="translate-button">Translate</button>
-    <p id="detectedLanguage"></p>
+    <h2>Youtube trascript translator</h2>
 
+    <div>
+        <p id="inputData"></p>
+        <label for="language">Translation Language</label>
+        <select id="language">
+        <option value="english" selected>English</option>
+        <option value="hindi">Hindi</option>
+        </select>
+    </div>
+    <div>
+        <h2>Translated output</h2>
+        <p id="outputArea"></p>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>

@@ -1,45 +1,55 @@
-async function detectLanguage() {
-    console.log("Arathy start priniting");
-    const canDetect = await translation.canDetect();
-    let detector;
-    if (canDetect !== 'no') {
-        if (canDetect === 'readily') {
-            // The language detector can immediately be used.
-            detector = await translation.createDetector();
-            let toTranslate = document.getElementById("dataToTranslate").innerHTML;
-            console.log("detector created");
-            const results = await detector.detect("This is a place in England.");
-            console.log("detected language");
-            let highest = 0;
-            let language;
-            document.getElementById("detectedLanguage").innerHTML = "This is a text in ";
-            for (const result of results) {
-                // Show the full list of potential languages with their likelihood
-                // In practice, one would pick the top language(s) crossing a high enough threshold.
-                if (result.confidence > highest) {
-                    highest = result.confidence;
-                    language = result.detectedLanguage;
+document.addEventListener('DOMContentLoaded', () => {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        if (tabs[0].id) {
+            // Connect to the content script in the active tab
+            const port = chrome.tabs.connect(tabs[0].id, { name: "connect-translator" });
+
+            // Listen for messages from the content script
+
+            const inputData = document.querySelector('#inputData');
+            const outputArea = document.querySelector('#outputArea');
+            let transcriptSegment;
+            
+            port.onMessage.addListener((message) => {
+                console.log("Content script: ", message);
+
+                if (message.type ==="transcriptFetched") {
+                    transcriptSegment = message.text;
+                } else if (message.type === "timeUpdate") {
+                    const currentSegment = findCurrentTranscriptSegemnt(message.time);
+                    inputData.textContent = currentSegment;
+                    translateContent(currentSegment)
+                        .then(content => {
+                            console.log(content);
+                            outputArea.textContent = content;
+                        }); 
                 }
-            } 
-            document.getElementById("detectedLanguage").innerHTML = "This is a text in " + language;
-            alert(language);            
-        } else {
-            // The language detector can be used after the model download.
-            detector = await translation.createDetector();
-            detector.addEventListener('downloadprogress', (e) => {
-            alert(e.loaded, e.total);
+
+                function findCurrentTranscriptSegemnt(currentTime) {
+                    if (typeof transcriptSegment === "undefined") {
+                        console.log("timeupdate first, have not received the data yet.")
+                        return;
+                    }
+                    for (const data of transcriptSegment) {
+                        if (currentTime <= data.transcriptTime){
+                            console.log("Found the current segment "+ data.transcript);
+                            return data.transcript;
+                        }
+                    }
+                }
+                
+                
             });
-            await detector.ready;
+
+            // Optional: Send a message to grab the transcript.
+            port.postMessage({ action: "transcriptFetch" });
         }
-    } else {
-        alert("translation not possible");
-    }
+    });
+});
 
-}
-
-async function translateContent() {
+async function translateContent(content) {
     const languagePair = {
-        sourceLanguage: 'en', 
+        sourceLanguage: 'en',
         targetLanguage: 'hi',
     };
       
@@ -49,10 +59,7 @@ async function translateContent() {
         if (canTranslate === 'readily') {
             // The translator can immediately be used.
             translator = await translation.createTranslator(languagePair);
-            let toTranslate = document.getElementById("dataToTranslate").innerHTML;
-            const translatedLanguage = await translator.translate(toTranslate);
-            console.log(translatedLanguage);
-            document.getElementById("detectedLanguage").innerHTML = translatedLanguage;
+            
         } else {
             // The translator can be used after the model download.
             translator = await translation.createTranslator(languagePair);
@@ -64,8 +71,10 @@ async function translateContent() {
     } else {
         // The translator can't be used at all.
     }
-
+    const translatedLanguage = await translator.translate(content);
+    console.log(translatedLanguage);
+    return translatedLanguage;
 }
 
-document.getElementById("translate-button").addEventListener("click", detectLanguage);
+
 
