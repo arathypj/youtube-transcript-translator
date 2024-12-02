@@ -6,8 +6,6 @@ This Chrome extension translates YouTube video captions in real-time, helping us
 
 ## Prerequisites
 
-## Prerequisites
-
 Before proceeding with the setup of this project, please ensure the following requirements are met:
 
 - **Access to the Translation API**: To use the Translation API, you must join the **Early Preview Program (EPP)** provided by Google. Please follow the registration steps outlined [here](https://developer.chrome.com/docs/ai/built-in#get_an_early_preview) to gain access.
