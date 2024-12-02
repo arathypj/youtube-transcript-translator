@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         translateContent(currentSegment)
                             .then(content => {
                                 console.log(content);
-                                outputArea.textContent += content;
+                                outputArea.textContent = content;
                             }); 
                     }
                 } catch (error) {

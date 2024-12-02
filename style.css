@@ -19,7 +19,7 @@ body {
     font-size: 14px;
     line-height: 2;
     border: 1px solid black;
-    padding: 10px;
+    padding: 40px 10px;
     position: relative;
     display: flex;
     flex-direction: column-reverse; /* This makes the text flow from bottom to top */
@@ -43,4 +43,4 @@ body {
 #errorMessage.show {
     display: block;
     animation: slideIn 0.5s ease-out;
-  }
+}
