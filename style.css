@@ -25,3 +25,22 @@ body {
     flex-direction: column-reverse; /* This makes the text flow from bottom to top */
     box-sizing: border-box;
 }
+
+#errorMessage {
+    position: fixed; 
+    top: 200px;
+    right: 40px;
+    padding: 15px;
+    background-color: rgba(255, 0, 0, 0.8);
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: none;
+}
+
+#errorMessage.show {
+    display: block;
+    animation: slideIn 0.5s ease-out;
+  }
